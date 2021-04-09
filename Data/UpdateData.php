@@ -10,9 +10,9 @@
  * data. Obviously we can do that with PHP, but this is a JS project!
  * 
  ******/
-const CACHE_FILE = "stats-base.txt";
+const CACHE_FILE = "./Data/stats-base.txt";
 const WHAZZUP = "https://status.vatsim.net/";
-const JSON_FILE = "vatsim-data.json";
+const JSON_FILE = "./Data/vatsim-data.json";
 
 //check the age of our whazzup file
 if (time() - @filemtime(CACHE_FILE) > 86400) {
