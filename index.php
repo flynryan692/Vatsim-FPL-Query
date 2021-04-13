@@ -33,13 +33,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
+                        <a class="nav-link" href="#" data-toggle="modal" data-target="#aboutModal">About</a>
                     </li>
                 </ul>
             </div>
@@ -52,18 +46,35 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header text-center">
-                        Featured
+                        Find A Flight
                     </div>
                     <div class="card-body">
-                        <form method="post">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Aircraft ID</label>
-                                <input type="email" class="form-control" id="acidInput" aria-describedby="acidHelp" placeholder="ABC123">
-                                <small id="acidHelp" class="form-text text-muted">ICAO callsign in FPL or aircraft reg</small>
-                            </div>
-                            <input type="submit" name="submit" class="btn btn-primary" value="Search">
-                        </form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Aircraft ID</label>
+                            <input type="text" class="form-control" id="acidInput" placeholder="ABC123">
+                        </div>
+                        <button class="btn btn-primary" onclick="searchFlights()">Search!</button>
+
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="aboutModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">About</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>This site is designed to search active flights on the Vatsim network and return their flight plan data. Simply enter the aircraft callsign such as ABC1234 or N123AB and click search. The site will return their flight plan data for you to view.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
