@@ -10,16 +10,16 @@
  * data. Obviously we can do that with PHP, but this is a JS project!
  * 
  ******/
-const CACHE_FILE = "./Data/stats-base.txt";
+const CACHE_FILE = "stats-base.txt";
 const WHAZZUP = "https://status.vatsim.net/";
-const JSON_FILE = "./Data/vatsim-data.json";
+const JSON_FILE = "vatsim-data.json";
 
 //check the age of our whazzup file
-if (time() - @filemtime(CACHE_FILE) > 86400) {
+if (time() - @filemtime(CACHE_FILE) > 43200) {
     //It's time to pull down a new whazzup
     $whazzup = file_get_contents(WHAZZUP);
     if (!$whazzup) {
-        print "Unable to fetch whazzup";
+        echo "Unable to fetch whazzup";
         die();
     }
     file_put_contents(CACHE_FILE, $whazzup);
@@ -42,10 +42,13 @@ if (!$filetime or (time() - $filetime >= $cache_life)) {
     //store the contents of the json file locally
     $dataFeed = file_get_contents($server);
     if (!$dataFeed) {
-        print 'No data feed';
+        echo 'No data feed';
         die();
     }
     file_put_contents(JSON_FILE, $dataFeed);
     // make sure the mtime is mutated
     touch(JSON_FILE);
+    echo 'vatsim-data.json was updated successfully.';
+} else {
+    echo 'Data not updated.';
 }

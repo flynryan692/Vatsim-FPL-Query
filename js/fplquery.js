@@ -1,3 +1,23 @@
+function refreshData() {
+    var refreshBtn = document.getElementById("refreshBtn");
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("POST", "./Data/UpdateData.php");
+    xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            refreshBtn.disabled = true;
+            console.log(this.responseText);
+        } else {
+            refreshBtn.innerHTML = `<i class="bi bi-cloud-download"></i> Refreshing`;
+            setTimeout(function () {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = `<i class="bi bi-arrow-clockwise"></i> Refresh Data`;
+            }, 5000);
+        };
+    }
+}
+
 function searchFlights() {
     let acid = document.getElementById('acidInput');
     let resultBox = document.getElementById('queryResults');
@@ -6,7 +26,8 @@ function searchFlights() {
         acid.classList.remove("is-invalid");
 
         //Use fetch to begin manipulating the JSON.
-        fetch('./Data/vatsim-data.json')
+        const url = './Data/vatsim-data.json';
+        fetch(url)
             .then(function (response) {
                 if (!response.ok) {
                     throw Error(response.statusText);
@@ -17,6 +38,7 @@ function searchFlights() {
             .then(function (dataAsJson) {
                 // Do stuff with the JSON
                 console.log(dataAsJson);
+                console.log(dataAsJson.general.update_timestamp);
                 for (i = 0; i < dataAsJson.pilots.length; i++) {
 
                     if (acid.value.toUpperCase() === dataAsJson.pilots[i].callsign) {

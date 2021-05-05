@@ -1,5 +1,3 @@
-<?php include 'Data/UpdateData.php'; ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -12,6 +10,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
 
     <title>Vatsim Flight Plan Query</title>
 </head>
@@ -54,6 +53,7 @@
                             <input type="text" class="form-control" id="acidInput" placeholder="ABC123">
                         </div>
                         <button class="btn btn-primary" onclick="searchFlights()">Search!</button>
+                        <button type="button" class="btn btn-sm btn-secondary float-right" onclick="refreshData()" id="refreshBtn"><i class="bi bi-arrow-clockwise"></i> Refresh Data</button>
 
                     </div>
                 </div>
