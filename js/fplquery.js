@@ -1,3 +1,4 @@
+//Run PHP script to grab data from Vatsim and save it locally
 function refreshData() {
     var refreshBtn = document.getElementById("refreshBtn");
     var xmlhttp = new XMLHttpRequest();
@@ -18,77 +19,74 @@ function refreshData() {
     }
 }
 
-function searchFlights() {
+//handle the JSON and return the data
+async function getJSONData(){
+   const response = await fetch('./Data/vatsim-data.json');
+   const data = await response.json();
+    //TODO handle errors
+   return data;
+}
+
+//search the JSON for the flight
+async function findFlight(){
     let acid = document.getElementById('acidInput');
     let resultBox = document.getElementById('queryResults');
+    const vatsimData = await getJSONData();
 
     if (acid.value.length > 1) {
         acid.classList.remove("is-invalid");
+        console.log(vatsimData);
+        for (i = 0; i < vatsimData.pilots.length; i++) {
 
-        //Use fetch to begin manipulating the JSON.
-        const url = './Data/vatsim-data.json';
-        fetch(url)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw Error(response.statusText);
-                }
-                // Read the response as json.
-                return response.json();
-            })
-            .then(function (dataAsJson) {
-                // Do stuff with the JSON
-                console.log(dataAsJson);
-                console.log(dataAsJson.general.update_timestamp);
-                for (i = 0; i < dataAsJson.pilots.length; i++) {
+            if (acid.value.toUpperCase() === vatsimData.pilots[i].callsign) {
+                resultBox.innerHTML = `
+                <div class="card mx-auto" style="width: 48rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Flight Plan Results For ${vatsimData.pilots[i].callsign}</h5>
+                        <table class="table">
+                            <tr>
+                                <td><strong>Origin:</strong> ${vatsimData.pilots[i].flight_plan.departure}</td>
+                                <td><strong>ETD:</strong> ${vatsimData.pilots[i].flight_plan.deptime}</td>
+                                <td><strong>Destination:</strong> ${vatsimData.pilots[i].flight_plan.arrival}</td>
+                                <td><strong>Alternate:</strong> ${vatsimData.pilots[i].flight_plan.alternate}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aircraft:</strong> ${vatsimData.pilots[i].flight_plan.aircraft_short}</td>
+                                <td><strong>Cruise Speed:</strong> ${vatsimData.pilots[i].flight_plan.cruise_tas}</td>
+                                <td><strong>Cruise Altitude:</strong> ${vatsimData.pilots[i].flight_plan.altitude}</td>
+                                <td><strong>Fuel Time:</strong> ${vatsimData.pilots[i].flight_plan.fuel_time}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><strong>Remarks:</strong> ${vatsimData.pilots[i].flight_plan.remarks}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"><strong>Route:</strong> ${vatsimData.pilots[i].flight_plan.route}</td>
+                            </tr>
 
-                    if (acid.value.toUpperCase() === dataAsJson.pilots[i].callsign) {
-                        resultBox.innerHTML = `
-                        <div class="card mx-auto" style="width: 48rem;">
-                            <div class="card-body">
-                                <h5 class="card-title">Flight Plan Results For ${dataAsJson.pilots[i].callsign}</h5>
-                                <table class="table">
-                                    <tr>
-                                        <td><strong>Origin:</strong> ${dataAsJson.pilots[i].flight_plan.departure}</td>
-                                        <td><strong>ETD:</strong> ${dataAsJson.pilots[i].flight_plan.deptime}</td>
-                                        <td><strong>Destination:</strong> ${dataAsJson.pilots[i].flight_plan.arrival}</td>
-                                        <td><strong>Alternate:</strong> ${dataAsJson.pilots[i].flight_plan.alternate}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Aircraft:</strong> ${dataAsJson.pilots[i].flight_plan.aircraft_short}</td>
-                                        <td><strong>Cruise Speed:</strong> ${dataAsJson.pilots[i].flight_plan.cruise_tas}</td>
-                                        <td><strong>Cruise Altitude:</strong> ${dataAsJson.pilots[i].flight_plan.altitude}</td>
-                                        <td><strong>Fuel Time:</strong> ${dataAsJson.pilots[i].flight_plan.fuel_time}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4"><strong>Remarks:</strong> ${dataAsJson.pilots[i].flight_plan.remarks}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4"><strong>Route:</strong> ${dataAsJson.pilots[i].flight_plan.route}</td>
-                                    </tr>
-
-                                </table>
-                            </div>
-                        </div>
-                        `;
-                        break;
-                    } else {
-                        resultBox.innerHTML = `
-                        <div class="alert alert-danger" role="alert">
-                        No Results Found For <strong>${acid.value.toUpperCase()}</strong>. Please try again.
-                      </div>
-                        `;
-                    }
-                }
-
-            })
-            .catch(function (error) {
-                console.log('Looks like there was a problem: \n', error);
-            });
-
+                        </table>
+                    </div>
+                </div>
+                `;
+                break;
+            } else {
+                resultBox.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                No Results Found For <strong>${acid.value.toUpperCase()}</strong>. Please try again.
+            </div>
+                `;
+            }
+        }
 
     } else {
         acid.classList.add("is-invalid");
         console.log("No aircraft id entered");
     }
 
+
+}
+
+//TODO display the flight information seperate from the search 
+function displayFlight(){
+    console.log("A cool function says..");
+    findFlight();
 }
