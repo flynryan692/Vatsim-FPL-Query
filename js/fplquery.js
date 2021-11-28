@@ -23,7 +23,8 @@ function refreshData() {
 
 //handle the JSON and return the data
 async function getJSONData(){
-   const response = await fetch('./Data/vatsim-data.json');
+   //const response = await fetch('./Data/vatsim-data.json');
+   const response = await fetch('https://data.vatsim.net/v3/vatsim-data.json');
 
    if(!response.ok){
        const message = `There was a problem getting the JSON: ${response.status}`;
